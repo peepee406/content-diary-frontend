@@ -18,7 +18,7 @@ const MovieDiary = () => {
         const data = await response.json();
         setWatchedMovies(data);
       } catch (err) {
-        console.error("Error fetching watched movies:", err);
+        alert("Error fetching watched movies: " + err.message);
       }
     };
     fetchWatchedMovies();
@@ -41,9 +41,15 @@ const MovieDiary = () => {
         }
       );
 
-      if (!response.ok) throw new Error("Network response was not ok");
+      if (!response.ok) {
+        alert("API Error: " + response.statusText);
+        throw new Error("Network response was not ok");
+      }
 
       const data = await response.json();
+
+      // Pop-up to show the raw API response
+      alert("API Response:\n" + JSON.stringify(data, null, 2));
 
       if (data?.data?.mainSearch?.edges) {
         const formattedMovies = data.data.mainSearch.edges
@@ -58,13 +64,17 @@ const MovieDiary = () => {
           })
           .filter((movie) => movie.image !== "");
 
+        // Pop-up to show formatted movies
+        alert("Formatted Movies:\n" + JSON.stringify(formattedMovies, null, 2));
+
         setMovies(formattedMovies);
       } else {
+        alert("No movies found.");
         setMovies([]);
       }
     } catch (error) {
       setError("Failed to fetch movies. Please try again later.");
-      console.error("Error fetching movies:", error);
+      alert("Error fetching movies: " + error.message);
     } finally {
       setLoading(false);
     }
@@ -80,9 +90,12 @@ const MovieDiary = () => {
 
       if (response.ok) {
         setWatchedMovies([...watchedMovies, movie]);
+        alert("Movie added to watchlist!");
+      } else {
+        alert("Failed to add movie.");
       }
     } catch (err) {
-      console.error("Error adding movie:", err);
+      alert("Error adding movie: " + err.message);
     }
   };
 
@@ -90,8 +103,9 @@ const MovieDiary = () => {
     try {
       await fetch(`${API_BASE_URL}/watched-movies/${movie.id}`, { method: "DELETE" });
       setWatchedMovies(watchedMovies.filter((m) => m.id !== movie.id));
+      alert("Movie removed from watchlist!");
     } catch (err) {
-      console.error("Error removing movie:", err);
+      alert("Error removing movie: " + err.message);
     }
   };
 
