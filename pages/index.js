@@ -21,7 +21,7 @@ export default function Home() {
 
         const response = await axios.request(options);
         console.log("API Response:", response.data);
-        alert(JSON.stringify(response.data)); 
+        
         // Shows data as an alert on mobile  // Debug log
 
         if (response.data && response.data.d) {
