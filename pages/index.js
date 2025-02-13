@@ -11,11 +11,11 @@ export default function Home() {
         try {
             const options = {
                 method: 'GET',
-                url: 'https://imdb236.p.rapidapi.com/imdb/tt7631058/cast',
+                url: 'https://imdb-com.p.rapidapi.com/search',
                 params: { q: search },
                 headers: {
                     'X-RapidAPI-Key': 'afd3c2c3ecmsh9ee5e2625c76f34p1e46cfjsn9ae85215c63b',  // Replace this
-                    'X-RapidAPI-Host': 'imdb236.p.rapidapi.com'
+                    'X-RapidAPI-Host': 'imdb-com.p.rapidapi.com'
                 }
             };
 
