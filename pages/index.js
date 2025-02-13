@@ -6,25 +6,31 @@ export default function Home() {
     const [movies, setMovies] = useState([]);
 
     const fetchMovies = async () => {
-        if (!search.trim()) return; // Prevent empty searches
+    if (!search.trim()) return; // Prevent empty searches
 
-        try {
-            const options = {
-                method: 'GET',
-                url: 'https://imdb-com.p.rapidapi.com/search',
-                params: { q: search },
-                headers: {
-                    'X-RapidAPI-Key': 'afd3c2c3ecmsh9ee5e2625c76f34p1e46cfjsn9ae85215c63b',  // Replace this
-                    'X-RapidAPI-Host': 'imdb-com.p.rapidapi.com'
-                }
-            };
+    try {
+        const options = {
+            method: 'GET',
+            url: 'https://imdb-com.p.rapidapi.com/search',
+            params: { searchTerm: search },
+            headers: {
+                'x-rapidapi-host': 'imdb-com.p.rapidapi.com',
+                'x-rapidapi-key': 'afd3c2c3ecmsh9ee5e2625c76f34p1e46cfjsn9ae85215c63b'  // Replace with your actual key
+            }
+        };
 
-            const response = await axios.request(options);
-            setMovies(response.data.d || []);
-        } catch (error) {
-            console.error("Error fetching movies:", error);
+        const response = await axios.request(options);
+        console.log("API Response:", response.data);  // Debug log
+
+        if (response.data && response.data.d) {
+            setMovies(response.data.d);
+        } else {
+            setMovies([]);  // Set empty if no results
         }
-    };
+    } catch (error) {
+        console.error("Error fetching movies:", error);
+    }
+};
 
     return (
         <div className="min-h-screen bg-gray-900 text-white p-8">
