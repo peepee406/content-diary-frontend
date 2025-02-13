@@ -18,7 +18,7 @@ export default function Home() {
                 params: { searchTerm: search },
                 headers: {
                     'x-rapidapi-host': 'imdb-com.p.rapidapi.com',
-                    'x-rapidapi-key': 'afd3c2c3ecmsh9ee5e2625c76f34p1e46cfjsn9ae85215c63b' // **SECURITY RISK - DO NOT DO THIS IN PRODUCTION**
+                    'x-rapidapi-key': process.env.NEXT_PUBLIC_RAPIDAPI_KEY
                 }
             };
 
@@ -82,4 +82,4 @@ export default function Home() {
             </div>
         </div>
     );
-}
+} // <-- THIS LINE WAS MISSING
