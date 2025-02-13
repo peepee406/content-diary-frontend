@@ -15,7 +15,7 @@ export default function Home() {
                 params: { q: search },
                 headers: {
                     'X-RapidAPI-Key': 'afd3c2c3ecmsh9ee5e2625c76f34p1e46cfjsn9ae85215c63b',  // Replace this
-                    'X-RapidAPI-Host': 'imdb8.p.rapidapi.com'
+                    'X-RapidAPI-Host': 'imdb236.p.rapidapi.com'
                 }
             };
 
