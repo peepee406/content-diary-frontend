@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { AlertCircle, Loader2, Search, Film, X } from "lucide-react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const MovieDiary = () => {
   const [search, setSearch] = useState("");
@@ -85,7 +83,7 @@ const MovieDiary = () => {
           />
         ) : (
           <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-            <Film className="w-12 h-12 text-gray-400" />
+            <span className="text-gray-400 text-4xl">🎬</span>
           </div>
         )}
       </div>
@@ -104,15 +102,7 @@ const MovieDiary = () => {
             : "bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
         }`}
       >
-        {isWatched ? (
-          <>
-            <X className="w-4 h-4" /> Remove
-          </>
-        ) : (
-          <>
-            <Film className="w-4 h-4" /> Add to Watched
-          </>
-        )}
+        {isWatched ? "Remove" : "Add to Watched"}
       </button>
     </div>
   );
@@ -138,19 +128,14 @@ const MovieDiary = () => {
                 placeholder="Search movies..."
                 className="w-full p-3 pl-10 rounded-lg bg-gray-800 border border-gray-600 text-white transition-all duration-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
-              <Search className="absolute left-3 top-3.5 text-gray-400 w-4 h-4" />
+              <span className="absolute left-3 top-3.5 text-gray-400">🔍</span>
             </div>
             <button
               onClick={fetchMovies}
               disabled={loading}
               className="px-6 py-3 bg-blue-600 rounded-lg text-white hover:bg-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
-              {loading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <Search className="w-4 h-4" />
-              )}
-              Search
+              {loading ? "Loading..." : "Search"}
             </button>
           </div>
           <button
@@ -161,22 +146,20 @@ const MovieDiary = () => {
                 : "bg-gray-700 hover:bg-gray-600"
             }`}
           >
-            <Film className="w-4 h-4" />
             {showWatchlist ? "Show Search" : "Show Watchlist"}
           </button>
         </div>
 
         {error && (
-          <Alert variant="destructive" className="mb-6">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
+          <div className="bg-red-900/50 border border-red-500 text-red-200 px-4 py-3 rounded-lg mb-6">
+            {error}
+          </div>
         )}
 
         {showWatchlist ? (
           <>
-            <h2 className="text-2xl font-bold mb-6 text-purple-400 flex items-center gap-2">
-              <Film className="w-6 h-6" /> My Watchlist ({watchedMovies.length})
+            <h2 className="text-2xl font-bold mb-6 text-purple-400">
+              My Watchlist ({watchedMovies.length})
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {watchedMovies.length === 0 ? (
@@ -199,8 +182,7 @@ const MovieDiary = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {loading ? (
               <div className="col-span-full text-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
-                <p className="text-gray-400">Searching for movies...</p>
+                <div className="text-gray-400">Searching for movies...</div>
               </div>
             ) : movies.length === 0 ? (
               <div className="col-span-full text-center text-gray-400 py-12">
