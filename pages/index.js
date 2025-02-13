@@ -30,16 +30,9 @@ const MovieDiary = () => {
     setError("");
 
     try {
-      const response = await fetch(
-        `https://imdb-com.p.rapidapi.com/search?searchTerm=${encodeURIComponent(search)}`,
-        {
-          method: "GET",
-          headers: {
-            "x-rapidapi-host": "imdb-com.p.rapidapi.com",
-            "x-rapidapi-key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY,
-          },
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/search?title=${encodeURIComponent(search)}`, {
+        method: "GET"
+      });
 
       if (!response.ok) {
         alert("API Error: " + response.statusText);
@@ -52,17 +45,15 @@ const MovieDiary = () => {
       alert("API Response:\n" + JSON.stringify(data, null, 2));
 
       if (data?.data?.mainSearch?.edges) {
-        const formattedMovies = data.data.mainSearch.edges
-          .map((item) => {
-            const entity = item.node?.entity;
-            return {
-              id: entity?.id || "N/A",
-              title: entity?.titleText?.originalTitleText?.text || entity?.titleText?.text || "Unknown Title",
-              image: entity?.primaryImage?.url || "",
-              year: entity?.releaseYear?.year || "N/A",
-            };
-          })
-          .filter((movie) => movie.image !== "");
+        const formattedMovies = data.data.mainSearch.edges.map((item) => {
+          const entity = item.node?.entity;
+          return {
+            id: entity?.id || "N/A",
+            title: entity?.titleText?.originalTitleText?.text || entity?.titleText?.text || "Unknown Title",
+            image: entity?.primaryImage?.url || "",
+            year: entity?.releaseYear?.year || "N/A",
+          };
+        }).filter((movie) => movie.image !== "");
 
         // Pop-up to show formatted movies
         alert("Formatted Movies:\n" + JSON.stringify(formattedMovies, null, 2));
