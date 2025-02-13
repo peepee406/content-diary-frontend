@@ -5,19 +5,16 @@ export default function Home() {
     const [search, setSearch] = useState("");
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [watchedMovies, setWatchedMovies] = useState([]); // State for watched movies
+    const [watchedMovies, setWatchedMovies] = useState([]);
 
-    // Load watched movies from localStorage on mount
     useEffect(() => {
         const storedWatchedMovies = JSON.parse(localStorage.getItem("watchedMovies")) || [];
         setWatchedMovies(storedWatchedMovies);
     }, []);
 
-    // Save watched movies to localStorage whenever it changes
     useEffect(() => {
         localStorage.setItem("watchedMovies", JSON.stringify(watchedMovies));
     }, [watchedMovies]);
-
 
     const fetchMovies = async () => {
         if (!search.trim()) return;
@@ -31,26 +28,30 @@ export default function Home() {
                 params: { searchTerm: search },
                 headers: {
                     'x-rapidapi-host': 'imdb-com.p.rapidapi.com',
-                    'x-rapidapi-key': process.env.NEXT_PUBLIC_RAPIDAPI_KEY, // Make sure this is in your .env file
+                    'x-rapidapi-key': process.env.NEXT_PUBLIC_RAPIDAPI_KEY,
                 },
             };
 
             const response = await axios.request(options);
 
-            if (response.data && response.data.d) {
-                const formattedMovies = response.data.d.map((item) => ({
+            console.log("API Response:", response.data);
+            alert("API Response: " + JSON.stringify(response.data, null, 2)); // ✅ Alert to verify API response
+
+            if (response.data && response.data.results) { // ✅ Verify correct key (change `d` to `results` if needed)
+                const formattedMovies = response.data.results.map((item) => ({
                     id: item.id,
-                    title: item.l, // Use 'l' for title
-                    image: item.i?.imageUrl || "https://via.placeholder.com/150", // Use 'i.imageUrl' with optional chaining
+                    title: item.titleText?.text || "Unknown Title",
+                    image: item.primaryImage?.url || "https://via.placeholder.com/150",
                 }));
 
                 setMovies(formattedMovies);
             } else {
+                alert("No movies found in API response!");
                 setMovies([]);
             }
         } catch (error) {
             console.error("Error fetching movies:", error);
-            alert("Failed to fetch data. Check console for details.");
+            alert("API Error: " + error.message);
         } finally {
             setLoading(false);
         }
@@ -58,14 +59,12 @@ export default function Home() {
 
     const handleAddToWatched = (movie) => {
         setWatchedMovies([...watchedMovies, movie]);
-        // Optionally, you can remove the movie from the search results:
         setMovies(movies.filter((m) => m.id !== movie.id));
     };
 
     const handleRemoveFromWatched = (movie) => {
-      setWatchedMovies(watchedMovies.filter((m) => m.id !== movie.id));
+        setWatchedMovies(watchedMovies.filter((m) => m.id !== movie.id));
     };
-
 
     return (
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-4">
@@ -107,7 +106,6 @@ export default function Home() {
                 ))}
             </div>
 
-            {/* Watched Movies Section */}
             <h2 className="text-2xl font-bold mt-8 mb-4">Watched Movies</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {watchedMovies.map((movie) => (
