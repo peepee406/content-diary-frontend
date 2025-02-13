@@ -35,7 +35,6 @@ export default function Home() {
             const response = await axios.request(options);
             
             console.log("API Response:", response.data);
-            alert("API Response: " + JSON.stringify(response.data, null, 2)); // Verify API response
 
             if (response.data && response.data.data && response.data.data.mainSearch.edges) {
                 const formattedMovies = response.data.data.mainSearch.edges.map((item) => {
@@ -49,12 +48,10 @@ export default function Home() {
 
                 setMovies(formattedMovies);
             } else {
-                alert("No movies found in API response!");
                 setMovies([]);
             }
         } catch (error) {
             console.error("Error fetching movies:", error);
-            alert("API Error: " + error.message);
         } finally {
             setLoading(false);
         }
@@ -94,7 +91,7 @@ export default function Home() {
                 <p className="text-center text-gray-400 mt-4">No movies found.</p>
             )}
 
-            <div className="grid grid-cols-2 md-grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {movies.map((movie) => (
                     <div key={movie.id} className="bg-gray-800 p-4 rounded-lg">
                         <img src={movie.image} alt={movie.title} className="w-full h-40 object-cover rounded" />
@@ -110,7 +107,7 @@ export default function Home() {
             </div>
 
             <h2 className="text-2xl font-bold mt-8 mb-4">Watched Movies</h2>
-            <div className="grid grid-cols-2 md-grid-cols-3 lg-grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {watchedMovies.map((movie) => (
                     <div key={movie.id} className="bg-gray-800 p-4 rounded-lg">
                         <img src={movie.image} alt={movie.title} className="w-full h-40 object-cover rounded" />
