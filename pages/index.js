@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const API_BASE_URL = "https://your-railway-backend-url.com";
+const API_BASE_URL = "https://content-diary-backend-production.up.railway.app";
 
 const MovieDiary = () => {
   const [search, setSearch] = useState("");
