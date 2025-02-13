@@ -24,53 +24,61 @@ export default function Home() {
         
         // Shows data as an alert on mobile  // Debug log
 
-        if (response.data && response.data.d) {
-            setMovies(response.data.d);
-        } else {
-            setMovies([]);  // Set empty if no results
+             
+
+            // Extract the movie list correctly from the response
+            if (response.data && response.data.d) {
+                const formattedMovies = response.data.d.map((item) => ({
+                    id: item.id,
+                    title: item.titleText?.originalTitleText?.text || "Unknown Title",
+                    image: item.primaryImage?.url || "https://via.placeholder.com/150",
+                }));
+
+                setMovies(formattedMovies);
+            } else {
+                setMovies([]); // Clear results if no movies found
+            }
+        } catch (error) {
+            console.error("Error fetching movies:", error);
+            alert("Failed to fetch data. Check console for details.");
         }
-    } catch (error) {
-        console.error("Error fetching movies:", error);
-    }
-};
+    };
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white p-8">
-            <h1 className="text-3xl text-center mb-4">Content Diary</h1>
-            <div className="flex justify-center mb-4">
+        <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-4">
+            <h1 className="text-3xl font-bold mb-6">Movie Search</h1>
+
+            <div className="flex space-x-2 mb-6">
                 <input
                     type="text"
-                    placeholder="Search movies, anime, series..."
-                    className="p-2 rounded-lg text-black"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Search movies..."
+                    className="p-2 rounded bg-gray-800 border border-gray-600 text-white w-64"
                 />
-                <button 
-                    className="ml-2 px-4 py-2 bg-blue-600 rounded-lg"
+                <button
                     onClick={fetchMovies}
+                    className="p-2 bg-blue-600 rounded text-white hover:bg-blue-700"
                 >
                     Search
                 </button>
             </div>
 
+            {/* Movie Results Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    {movies.length > 0 ? (
-        movies.map((movie) => (
-            <div key={movie.id} className="bg-gray-800 p-4 rounded-lg">
-                <img 
-                    src={movie.image}  
-                    alt={movie.title} 
-                    className="w-full h-40 object-cover rounded"
-                />
-                <h2 className="text-lg mt-2 text-white">{movie.title}</h2>
-            </div>
-        ))
-    ) : (
-        <p className="text-white">No results found.</p>
-    )}
-</div>
+                {movies.map((movie) => (
+                    <div key={movie.id} className="bg-gray-800 p-4 rounded-lg">
+                        <img 
+                            src={movie.image}  
+                            alt={movie.title} 
+                            className="w-full h-40 object-cover rounded"
+                        />
+                        <h2 className="text-lg mt-2">{movie.title}</h2>
+                    </div>
                 ))}
             </div>
         </div>
     );
+}
+
 }
