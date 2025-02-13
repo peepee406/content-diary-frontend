@@ -58,18 +58,22 @@ export default function Home() {
     };
 
     const handleAddToWatched = (movie) => {
-        setWatchedMovies([...watchedMovies, movie]);
-        setMovies(movies.filter((m) => m.id !== movie.id));
+        if (!watchedMovies.some((m) => m.id === movie.id)) {
+            const updatedList = [...watchedMovies, movie];
+            setWatchedMovies(updatedList);
+        }
     };
 
     const handleRemoveFromWatched = (movie) => {
-        setWatchedMovies(watchedMovies.filter((m) => m.id !== movie.id));
+        const updatedList = watchedMovies.filter((m) => m.id !== movie.id);
+        setWatchedMovies(updatedList);
     };
 
     return (
         <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-4">
             <h1 className="text-3xl font-bold mb-6">Movie Watchlist</h1>
 
+            {/* Search Bar */}
             <div className="flex space-x-2 mb-6">
                 <input
                     type="text"
@@ -86,31 +90,45 @@ export default function Home() {
                 </button>
             </div>
 
+            {/* Loading and No Results Messages */}
             {loading && <p className="text-center text-gray-400 mt-4">Loading...</p>}
             {movies.length === 0 && !loading && (
                 <p className="text-center text-gray-400 mt-4">No movies found.</p>
             )}
 
+            {/* Movie Search Results */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {movies.map((movie) => (
                     <div key={movie.id} className="bg-gray-800 p-4 rounded-lg">
-                        <img src={movie.image} alt={movie.title} className="w-full h-40 object-cover rounded" />
+                        <img 
+                            src={movie.image} 
+                            alt={movie.title} 
+                            className="w-full h-56 object-cover rounded" 
+                        />
                         <h2 className="text-lg mt-2">{movie.title}</h2>
                         <button
                             onClick={() => handleAddToWatched(movie)}
-                            className="mt-2 p-1 bg-green-600 rounded text-white hover:bg-green-700"
+                            className={`mt-2 p-1 rounded text-white ${
+                                watchedMovies.some((m) => m.id === movie.id) ? "bg-gray-600" : "bg-green-600 hover:bg-green-700"
+                            }`}
+                            disabled={watchedMovies.some((m) => m.id === movie.id)}
                         >
-                            Add to Watched
+                            {watchedMovies.some((m) => m.id === movie.id) ? "Added" : "Add to Watched"}
                         </button>
                     </div>
                 ))}
             </div>
 
+            {/* Watched Movies Section */}
             <h2 className="text-2xl font-bold mt-8 mb-4">Watched Movies</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {watchedMovies.map((movie) => (
                     <div key={movie.id} className="bg-gray-800 p-4 rounded-lg">
-                        <img src={movie.image} alt={movie.title} className="w-full h-40 object-cover rounded" />
+                        <img 
+                            src={movie.image} 
+                            alt={movie.title} 
+                            className="w-full h-56 object-cover rounded" 
+                        />
                         <h2 className="text-lg mt-2">{movie.title}</h2>
                         <button
                             onClick={() => handleRemoveFromWatched(movie)}
@@ -123,4 +141,4 @@ export default function Home() {
             </div>
         </div>
     );
-}
+                                }
