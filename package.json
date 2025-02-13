@@ -10,11 +10,10 @@
     "next": "latest",
     "axios": "^1.6.0",
     "react": "latest",
-    "postcss": "^8.4.21",
     "react-dom": "latest",
     "tailwindcss": "latest",
-    "autoprefixer": "^10.4.0"
-    
+    "postcss": "^8.4.21",
+    "autoprefixer": "^10.4.0",
+    "@tailwindcss/postcss": "^0.1.0"  // 🔹 Add this line
   }
-  
 }
