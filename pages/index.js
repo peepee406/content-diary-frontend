@@ -4,29 +4,26 @@ import axios from "axios";
 export default function Home() {
     const [search, setSearch] = useState("");
     const [movies, setMovies] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const fetchMovies = async () => {
-    if (!search.trim()) return; // Prevent empty searches
+        if (!search.trim()) return;
 
-    try {
-        const options = {
-            method: 'GET',
-            url: 'https://imdb-com.p.rapidapi.com/search',
-            params: { searchTerm: search },
-            headers: {
-                'x-rapidapi-host': 'imdb-com.p.rapidapi.com',
-                'x-rapidapi-key': 'afd3c2c3ecmsh9ee5e2625c76f34p1e46cfjsn9ae85215c63b'  // Replace with your actual key
-            }
-        };
+        setLoading(true);
 
-        const response = await axios.request(options);
-        console.log("API Response:", response.data);
-        
-        // Shows data as an alert on mobile  // Debug log
+        try {
+            const options = {
+                method: 'GET',
+                url: 'https://imdb-com.p.rapidapi.com/search',
+                params: { searchTerm: search },
+                headers: {
+                    'x-rapidapi-host': 'imdb-com.p.rapidapi.com',
+                    'x-rapidapi-key': 'afd3c2c3ecmsh9ee5e2625c76f34p1e46cfjsn9ae85215c63b' // **SECURITY RISK - DO NOT DO THIS IN PRODUCTION**
+                }
+            };
 
-             
+            const response = await axios.request(options);
 
-            // Extract the movie list correctly from the response
             if (response.data && response.data.d) {
                 const formattedMovies = response.data.d.map((item) => ({
                     id: item.id,
@@ -36,11 +33,13 @@ export default function Home() {
 
                 setMovies(formattedMovies);
             } else {
-                setMovies([]); // Clear results if no movies found
+                setMovies([]);
             }
         } catch (error) {
             console.error("Error fetching movies:", error);
             alert("Failed to fetch data. Check console for details.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -64,13 +63,17 @@ export default function Home() {
                 </button>
             </div>
 
-            {/* Movie Results Grid */}
+            {loading && <p className="text-center text-gray-400 mt-4">Loading...</p>}
+            {movies.length === 0 && !loading && (
+                <p className="text-center text-gray-400 mt-4">No movies found.</p>
+            )}
+
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {movies.map((movie) => (
                     <div key={movie.id} className="bg-gray-800 p-4 rounded-lg">
-                        <img 
-                            src={movie.image}  
-                            alt={movie.title} 
+                        <img
+                            src={movie.image}
+                            alt={movie.title}
                             className="w-full h-40 object-cover rounded"
                         />
                         <h2 className="text-lg mt-2">{movie.title}</h2>
@@ -80,4 +83,3 @@ export default function Home() {
         </div>
     );
 }
-
