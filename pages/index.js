@@ -11,7 +11,7 @@ export default function Home() {
         try {
             const options = {
                 method: 'GET',
-                url: 'https://imdb8.p.rapidapi.com/auto-complete',
+                url: 'https://imdb236.p.rapidapi.com/imdb/tt7631058/cast',
                 params: { q: search },
                 headers: {
                     'X-RapidAPI-Key': 'afd3c2c3ecmsh9ee5e2625c76f34p1e46cfjsn9ae85215c63b',  // Replace this
