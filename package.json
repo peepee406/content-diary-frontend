@@ -13,7 +13,7 @@
     "react-dom": "latest",
     "tailwindcss": "latest",
     "postcss": "^8.4.21",
-    "autoprefixer": "^10.4.0",
+    "autoprefixer": "^10.4.0"
   
   }
 }
