@@ -54,11 +54,21 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {movies.map((movie) => (
-                    <div key={movie.id} className="bg-gray-800 p-4 rounded-lg">
-                        <img src={movie.i?.imageUrl} alt={movie.l} className="w-full h-40 object-cover rounded" />
-                        <h2 className="text-lg mt-2">{movie.l}</h2>
-                    </div>
+    {movies.length > 0 ? (
+        movies.map((movie) => (
+            <div key={movie.id} className="bg-gray-800 p-4 rounded-lg">
+                <img 
+                    src={movie.image}  
+                    alt={movie.title} 
+                    className="w-full h-40 object-cover rounded"
+                />
+                <h2 className="text-lg mt-2 text-white">{movie.title}</h2>
+            </div>
+        ))
+    ) : (
+        <p className="text-white">No results found.</p>
+    )}
+</div>
                 ))}
             </div>
         </div>
