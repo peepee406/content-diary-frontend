@@ -7,9 +7,11 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "13.0.2",
+    "next": "latest",
+    "axios": "^1.6.0",
     "react": "latest",
     "react-dom": "latest",
     "tailwindcss": "latest"
+    
   }
 }
